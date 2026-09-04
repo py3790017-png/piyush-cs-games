@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piyush CS Games</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#111827,#312e81);color:white;min-height:100vh}
+header{text-align:center;padding:35px 15px 20px}h1{font-size:42px;margin:0 0 8px}header p{color:#c7d2fe}
+.container{max-width:1000px;margin:auto;padding:20px}.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:25px;text-align:center;box-shadow:0 10px 30px #0003;backdrop-filter:blur(8px)}
+.card h2{margin:10px 0}.emoji{font-size:55px}.btn{border:0;border-radius:12px;padding:12px 20px;background:#8b5cf6;color:white;font-size:16px;font-weight:bold;cursor:pointer}.btn:hover{background:#7c3aed}
+.game{display:none;background:rgba(0,0,0,.25);margin-top:25px;padding:25px;border-radius:20px;text-align:center}
+.back{background:#374151;margin-bottom:15px}.choice{font-size:45px;background:none;border:0;cursor:pointer;margin:10px}.result{font-size:22px;min-height:35px}
+#clickBtn{font-size:28px;padding:30px 45px;border-radius:20px}
+input{padding:12px;border-radius:10px;border:0;width:120px;font-size:18px;text-align:center}
+</style>
+</head>
+<body>
+<header><h1>🎮 PIYUSH CS GAMES</h1><p>Pick a game and have some fun!</p></header>
+<div class="container">
+<div class="games">
+<div class="card"><div class="emoji">✊</div><h2>Rock Paper Scissors</h2><p>Beat the computer!</p><button class="btn" onclick="showGame('rps')">Play</button></div>
+<div class="card"><div class="emoji">⚡</div><h2>Click Challenge</h2><p>How many clicks in 10 seconds?</p><button class="btn" onclick="showGame('click')">Play</button></div>
+<div class="card"><div class="emoji">🔢</div><h2>Guess the Number</h2><p>Guess a number from 1–100.</p><button class="btn" onclick="showGame('guess')">Play</button></div>
+</div>
+
+<div id="rps" class="game"><button class="btn back" onclick="hideGames()">← Back</button><h2>✊ Rock Paper Scissors</h2>
+<button class="choice" onclick="rps('rock')">✊</button><button class="choice" onclick="rps('paper')">✋</button><button class="choice" onclick="rps('scissors')">✌️</button>
+<div id="rpsResult" class="result"></div></div>
+
+<div id="click" class="game"><button class="btn back" onclick="hideGames()">← Back</button><h2>⚡ Click Challenge</h2><p id="timer">10 seconds</p><button id="clickBtn" class="btn" onclick="clickGame()">CLICK!</button><div id="clickResult" class="result"></div></div>
+
+<div id="guess" class="game"><button class="btn back" onclick="hideGames()">← Back</button><h2>🔢 Guess the Number</h2><p>I'm thinking of a number between 1 and 100.</p><input id="guessInput" type="number" min="1" max="100"><button class="btn" onclick="guess()">Guess</button><div id="guessResult" class="result"></div></div>
+</div>
+
+<script>
+function showGame(id){document.querySelector('.games').style.display='none';document.querySelectorAll('.game').forEach(x=>x.style.display='none');document.getElementById(id).style.display='block';if(id==='click')startClick();}
+function hideGames(){document.querySelector('.games').style.display='grid';document.querySelectorAll('.game').forEach(x=>x.style.display='none');}
+function rps(p){let a=['rock','paper','scissors'][Math.floor(Math.random()*3)],r=p===a?'Draw!':(p==='rock'&&a==='scissors'||p==='paper'&&a==='rock'||p==='scissors'&&a==='paper')?'You win! 🎉':'Computer wins! 🤖';document.getElementById('rpsResult').textContent=`You: ${p} | Computer: ${a} — ${r}`;}
+let clicks=0,time=10,active=false,interval;
+function startClick(){clicks=0;time=10;active=true;document.getElementById('timer').textContent='10 seconds';document.getElementById('clickResult').textContent='';clearInterval(interval);interval=setInterval(()=>{time--;document.getElementById('timer').textContent=time+' seconds';if(time<=0){active=false;clearInterval(interval);document.getElementById('clickResult').textContent='Your score: '+clicks+' clicks! 🎉';}},1000);}
+function clickGame(){if(active)clicks++;}
+let target=Math.floor(Math.random()*100)+1;
+function guess(){let n=Number(document.getElementById('guessInput').value),el=document.getElementById('guessResult');if(!n)return;if(n===target){el.textContent='Correct! 🎉 New number generated.';target=Math.floor(Math.random()*100)+1;}else el.textContent=n<target?'Too low ⬇️':'Too high ⬆️';}
+</script>
+</body>
+</html>
